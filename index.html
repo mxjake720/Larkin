@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Larkin Sit-Out Meter — What he forfeits per day</title>
+<meta name="description" content="Dylan Larkin earns $41,237 a day of the 2026-27 season. A live meter for what sitting out until a trade actually costs him — and why the real answer may be zero.">
+<link rel="canonical" href="https://mxjake720.github.io/larkin/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Larkin Sit-Out Meter">
+<meta property="og:title" content="What Dylan Larkin burns per day on the shelf">
+<meta property="og:description" content="$8M base salary, no signing bonus, 194-day season. That is $41,237 a day — if the Wings call it a suspension. If it is a healthy scratch, he loses nothing.">
+<meta property="og:url" content="https://mxjake720.github.io/larkin/">
+<meta property="og:image" content="https://mxjake720.github.io/larkin/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="What Larkin burns per day on the shelf: $8,000,000 base salary, $41,237 per day, $95,238 per game, $6.76M rest of season.">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What Dylan Larkin burns per day on the shelf">
+<meta name="twitter:description" content="$8M base salary, no signing bonus, 194-day season. $41,237 a day — if the Wings call it a suspension.">
+<meta name="twitter:image" content="https://mxjake720.github.io/larkin/preview.png">
+
+<style>
+html{color-scheme:light}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font:14px system-ui,sans-serif}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;600&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Layout: single column, scoreboard-style hero over a stacked math ledger */
+:root{
+  --bg:#E9EBEE;
+  --surface:#FFFFFF;
+  --ink:#14181C;
+  --muted:#5C6670;
+  --line:#C9CFD6;
+  --red:#C8102E;
+  --green:#1F7A4D;
+  --display:'Anton','Haettenschweiler','Arial Narrow',sans-serif;
+  --body:'Source Sans 3','Segoe UI',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D1114; --surface:#161C21; --ink:#EDF1F4; --muted:#95A1AC;
+    --line:#2B343B; --red:#FF4D63; --green:#49C98A; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D1114; --surface:#161C21; --ink:#EDF1F4; --muted:#95A1AC;
+  --line:#2B343B; --red:#FF4D63; --green:#49C98A; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:28px 56px;}
+.wrap{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+.eyebrow{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(2.2rem,8vw,3.6rem);line-height:.98;
+  letter-spacing:.01em;margin:.25rem 0 0;text-wrap:balance;text-transform:uppercase}
+h1 .hl{color:var(--red)}
+.sub{color:var(--muted);max-width:60ch;margin-top:.6rem}
+h2{font-family:var(--display);font-weight:400;text-transform:uppercase;letter-spacing:.02em;
+  font-size:1.35rem;margin:0}
+
+.meter{background:var(--surface);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.meter-top{display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;justify-content:space-between;
+  padding:16px 18px;border-bottom:1px solid var(--line)}
+.meter-body{padding:22px 18px 24px;display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center}
+.counter{font-family:var(--mono);font-weight:600;font-variant-numeric:tabular-nums;
+  font-size:clamp(2.1rem,10vw,4rem);line-height:1;letter-spacing:-.02em}
+.counter.loss{color:var(--red)}
+.counter.paid{color:var(--green)}
+.counter-note{color:var(--muted);font-size:.9rem;max-width:46ch}
+.rate{font-family:var(--mono);font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums}
+
+.toggle{display:flex;gap:0;border:1px solid var(--line);border-radius:3px;overflow:hidden;flex-wrap:wrap}
+.toggle button{flex:1 1 180px;min-width:0;appearance:none;border:0;background:transparent;color:var(--muted);
+  font-family:var(--body);font-weight:600;font-size:.84rem;padding:9px 12px;cursor:pointer;
+  border-right:1px solid var(--line)}
+.toggle button:last-child{border-right:0}
+.toggle button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.toggle button:focus-visible{outline:2px solid var(--red);outline-offset:-2px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.cell{background:var(--surface);padding:14px 16px;min-width:0;display:flex;flex-direction:column;gap:3px}
+.cell .k{font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.cell .v{font-family:var(--mono);font-weight:600;font-size:1.22rem;font-variant-numeric:tabular-nums}
+.cell .s{font-size:.78rem;color:var(--muted)}
+
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--surface)}
+th,td{padding:9px 14px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:400}
+td:last-child,th:last-child{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+tr.total td{font-weight:700;background:color-mix(in srgb,var(--red) 8%,var(--surface))}
+
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:16px 18px;
+  display:flex;flex-direction:column;gap:8px;min-width:0}
+.card.on{border-color:var(--red);box-shadow:inset 3px 0 0 var(--red)}
+.card h3{margin:0;font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:1.05rem;letter-spacing:.02em}
+.card p{margin:0;font-size:.9rem;color:var(--muted)}
+.pill{align-self:flex-start;font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 7px;border-radius:2px;border:1px solid var(--line);color:var(--muted)}
+.pill.hot{border-color:var(--red);color:var(--red)}
+
+.note{font-size:.85rem;color:var(--muted);max-width:66ch}
+.note strong{color:var(--ink)}
+section{display:flex;flex-direction:column;gap:12px}
+hr{border:0;border-top:1px solid var(--line);margin:0}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Detroit · Oct 29, 2026 · 84-game season</div>
+  <h1>What Larkin burns <span class="hl">per day</span> on the shelf</h1>
+  <p class="sub">His 2026–27 pay is $8,000,000 of straight base salary — no signing bonus to shield any of it. NHL salary is earned over the days of the regular season, so the answer comes down to one thing: who is keeping him out.</p>
+</header>
+
+<div class="meter">
+  <div class="meter-top">
+    <div class="toggle" role="group" aria-label="Who is keeping him out">
+      <button id="btnScratch" type="button" aria-pressed="true">Team holds him out</button>
+      <button id="btnHoldout" type="button" aria-pressed="false">He refuses to play</button>
+    </div>
+    <div class="rate" id="rateLine">$0.00 / second</div>
+  </div>
+  <div class="meter-body">
+    <div class="eyebrow" id="meterLabel">Forfeited since first game missed</div>
+    <div class="counter paid" id="counter">$0.00</div>
+    <div class="counter-note" id="meterNote">A healthy scratch is paid in full. Sitting in the press box costs him nothing — the club is protecting an asset, not docking a paycheck.</div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="cell"><span class="k">Base salary 26–27</span><span class="v">$8,000,000</span><span class="s">Signing bonus: $0</span></div>
+  <div class="cell"><span class="k">Days in season</span><span class="v">194</span><span class="s">Sep 29 – Apr 10</span></div>
+  <div class="cell"><span class="k">Per day</span><span class="v">$41,237</span><span class="s">Salary ÷ 194 days</span></div>
+  <div class="cell"><span class="k">Per game</span><span class="v">$95,238</span><span class="s">Salary ÷ 84 games</span></div>
+</div>
+
+<section>
+  <h2>If he is the one sitting</h2>
+  <p class="note">A player who refuses to report forfeits salary by the day, not by the game. The meter runs on off-days, travel days and All-Star break alike.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Length of the standoff</th><th>Days</th><th>Pay given up</th></tr></thead>
+      <tbody>
+        <tr><td>One day</td><td>1</td><td>$41,237</td></tr>
+        <tr><td>One week</td><td>7</td><td>$288,660</td></tr>
+        <tr><td>Through November</td><td>33</td><td>$1,360,825</td></tr>
+        <tr><td>Until the trade deadline</td><td>123</td><td>$5,072,165</td></tr>
+        <tr class="total"><td>The rest of the season</td><td>164</td><td>$6,762,887</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Roughly 85% of this year's pay is still ahead of him. He has banked about <strong>$1.24M</strong> of the $8M so far — 30 days in.</p>
+</section>
+
+<section>
+  <h2>Which scenario is live right now</h2>
+  <div class="split">
+    <div class="card on" id="cardScratch">
+      <span class="pill hot">Reported Thursday</span>
+      <h3>Asset protection</h3>
+      <p>Frank Seravalli reported the plan is for Detroit to sit him so an injury cannot tank his trade value before a deal closes. Under this version he is a healthy scratch and the paychecks keep clearing.</p>
+    </div>
+    <div class="card" id="cardHoldout">
+      <span class="pill">Also reported Thursday</span>
+      <h3>Walked out</h3>
+      <p>Elliotte Friedman and Pierre LeBrun reported Larkin told the club he is done playing until he is moved, and Darren Dreger raised the possibility of a suspension. A suspension is what turns the meter on.</p>
+    </div>
+  </div>
+  <p class="note">Both versions came out the same morning and they point to opposite paychecks. Until Detroit calls it a suspension in writing, the honest number for what he is losing per day is <strong>$0</strong> — with $41,237 a day sitting one press release away.</p>
+</section>
+
+<hr>
+<p class="note">Contract terms from PuckPedia and Spotrac. Season length from the NHL's 2026–27 schedule: Sept 29, 2026 through April 10, 2027.</p>
+
+</div>
+
+<script>
+(function(){
+  var SALARY=8000000, DAYS=194, PERDAY=SALARY/DAYS, PERSEC=PERDAY/86400;
+  var START=new Date('2026-10-29T00:00:00-04:00').getTime();
+  var mode='scratch';
+  var counter=document.getElementById('counter'),
+      note=document.getElementById('meterNote'),
+      label=document.getElementById('meterLabel'),
+      rate=document.getElementById('rateLine'),
+      bS=document.getElementById('btnScratch'), bH=document.getElementById('btnHoldout'),
+      cS=document.getElementById('cardScratch'), cH=document.getElementById('cardHoldout');
+
+  function money(n){return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+
+  function render(){
+    if(mode==='scratch'){
+      counter.textContent='$0.00';
+      counter.className='counter paid';
+      label.textContent='Forfeited since first game missed';
+      note.textContent='A healthy scratch is paid in full. Sitting in the press box costs him nothing — the club is protecting an asset, not docking a paycheck.';
+      rate.textContent='$0.00 / second';
+      cS.classList.add('on'); cH.classList.remove('on');
+    }else{
+      var secs=Math.max(0,(Date.now()-START)/1000);
+      counter.textContent=money(secs*PERSEC);
+      counter.className='counter loss';
+      label.textContent='Forfeited since he stopped playing';
+      note.textContent='Counting from Oct 29, the first game missed. A suspension for refusing to report docks pay every calendar day of the season, not just game days.';
+      rate.textContent='$'+PERSEC.toFixed(4)+' / second';
+      cH.classList.add('on'); cS.classList.remove('on');
+    }
+  }
+  function set(m){
+    mode=m;
+    bS.setAttribute('aria-pressed',String(m==='scratch'));
+    bH.setAttribute('aria-pressed',String(m==='holdout'));
+    render();
+  }
+  bS.addEventListener('click',function(){set('scratch');});
+  bH.addEventListener('click',function(){set('holdout');});
+  setInterval(function(){ if(mode==='holdout') render(); },100);
+  render();
+})();
+</script>
+
+</body>
+</html>
